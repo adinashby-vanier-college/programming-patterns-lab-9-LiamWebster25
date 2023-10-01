@@ -32,40 +32,35 @@ public class LabNine {
      * Please refer to the README file for question(s) description
      */
     public static List<List<String>> groupStrings(String[] strings) {
-        HashMap<String, List<String>> map = new HashMap<>();
+    HashMap<String, List<String>> map = new HashMap<>();
 
-        for (int i = 0; i < strings.length; i++) {
-            int[] shifts = shiftingSeq(i, strings);
-            String key = Arrays.toString(shifts);
+    for (int i = 0; i < strings.length; i++) {
+        String key = calculateKey(strings[i]);
 
-            if (!map.containsKey(key)) {
-                map.put(key, new ArrayList<>());
-            }
-
-            map.get(key).add(strings[i]);
+        if (!map.containsKey(key)) {
+            map.put(key, new ArrayList<>());
         }
 
-        List<List<String>> result = new ArrayList<>(map.values());
-
-        return result;
+        map.get(key).add(strings[i]);
     }
 
-    public static int[] shiftingSeq(int index, String[] strings) {
-        int[] shifts = new int[strings.length];
+    List<List<String>> result = new ArrayList<>(map.values());
 
-        for (int i = 0; i < strings.length; i++) {
-            if (index != i) {
-                int diff = strings[i].charAt(0) - strings[index].charAt(0);
+    return result;
+}
 
-                if (diff < 0) {
-                    diff += 26;
-                }
-                shifts[i] = diff;
-            } else {
-                shifts[i] = 0;
-            }
+private static String calculateKey(String str) {
+    String key = "";
+    int len = str.length();
+
+    for (int i = 1; i < len; i++) {
+        int diff = str.charAt(i) - str.charAt(i - 1);
+        if (diff < 0) {
+            diff += 26;
         }
-
-        return shifts;
+        key += diff + ", ";
     }
+
+    return key.toString();
+}
 }
